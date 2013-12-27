@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="generator" content="PSPad editor, www.pspad.com">
+        <script type="text/javascript" src="/external_libraries/jquery-1.4.1.js"></script>
+        <script type="text/javascript" src="./game.js"></script>
+        <link rel="stylesheet" href="./style.css" type="text/css" />
+        <title>Paie ton mal de crâne</title>
+    </head>
+    <body>
+
+    <!-- Board -->
+    <?php echo $board; ?>
+
+    <!-- Custom size buttons -->
+        <form methos=GET action="index.php">
+            <table border=0>
+                <tr>
+                    <td>Nombre de lignes</td>
+                    <td><input type=text name="height" value=<?php echo $nbRows; ?>></td>
+                </tr>
+                <tr>
+                    <td>Nombre de colonnes</td>
+                    <td><input type=text name="width" value=<?php echo $nbCols; ?>></td>
+                    <td><input type=submit value="Go !"></td>
+                </tr>
+            </table>
+        </form>
+
+    <!-- AI buttons -->
+    <?php
+        if($AI)
+        {
+    ?>
+         <input type=submit value="Meilleur coup suivant" onclick="board.findNext()">
+            <input type=submit value="Terminer" onclick="board.findAll()">
+            <script type="text/javascript">
+                // AI game - 1 step
+                board.findNext = function()
+                {
+                    $.getJSON("actionManager.php",
+                        {"action": "findNext"},
+                        function(data)
+                        {
+                            that.updateBoard(data);
+                        }
+                    );
+                }
+
+                // AI game - try to finish
+                board.findAll = function()
+                {
+                    $.getJSON("actionManager.php",
+                        {"action": "findAll"},
+                        function(data)
+                        {
+                            that.updateBoard(data);
+                        }
+                    );
+                }
+            </script>
+    <?php
+        }
+    ?>
+
+    <!-- Bind the board -->
+        <script type="text/javascript">
+            $(document).ready(function(){
+                board = new hSquares.Board(<?php echo $nbCols; ?>, <?php echo $nbRows; ?>);
+                board.bindBoard('#board td');
+            });
+        </script>
+    </body>
+</html>

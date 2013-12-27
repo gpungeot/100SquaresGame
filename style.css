@@ -1,0 +1,29 @@
+.square
+{
+    background:#DDDDDD;/* none repeat scroll 0 0;*/
+    border:2px #FFFFFF;
+    text-align:center;
+    font-size:26px;
+    height:45px;
+    width:45px;
+}
+
+.squareIphone
+{
+    background:#DDDDDD;/* none repeat scroll 0 0;*/
+    border:2px inset #FFFFFF;
+    text-align:center;
+    font-size:54px;
+    height:90px;
+    width:90px;
+}
+
+.lastSquare
+{
+    color:#FF0000;
+}
+
+.availableSquare
+{
+    background:#AADDDD
+}
