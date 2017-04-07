@@ -58,7 +58,7 @@ hSquares.Board = function(w, h)
                     if (confirm("Voulez-vous revenir à cette case ?"))
                     {
                         $.getJSON("actionManager.php",
-                            {"action": "back", "i": data.squares[0].x, "j": data.squares[0].y},
+                            {"action": "back", "x": data.squares[0].x, "y": data.squares[0].y},
                             function(data)
                             {
                                 that.updateBoard(data)

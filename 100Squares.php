@@ -12,7 +12,9 @@
         function nSquaresGame($xRange, $yRange, $defaultValue, $forceRenew = false)
         {
             if( !$forceRenew && isset($_SESSION['board']))
+            {
                 $this->_board = unserialize($_SESSION['board']);
+            }
             else
             {
                 $this->_board = new board($xRange, $yRange, $defaultValue);
@@ -114,12 +116,12 @@
             $value = $this->_board->getSquareValue($x, $y);
             if($value != 0)
             {
-                for($x = 0; $x < $this->_board->getSize()->getX(); $x++)
+                for($i = 0; $i < $this->_board->getSize()->getX(); $i++)
                 {
-                    for($y = 0; $y < $this->_board->getSize()->getY(); $y++)
+                    for($j = 0; $j < $this->_board->getSize()->getY(); $j++)
                     {
-                        if($this->_board->getSquareValue($x, $y) > $value)
-                            $this->_board->clearSquare($x, $y);
+                        if($this->_board->getSquareValue($i, $j) > $value)
+                            $this->_board->clearSquare($i, $j);
                     }
                 }
 
