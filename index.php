@@ -8,7 +8,7 @@
     new nSquaresGame($nbCols, $nbRows, null, true);
 
     // Iphone CSS - Ugly stuff I know (but I don't care)
-    if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') == false)
+    if(strpos($_SERVER['HTTP_USER_AGENT'], 'iPhone') == false && strpos($_SERVER['HTTP_USER_AGENT'], 'Android') == false)
         $cssSquare = 'square';
     else
         $cssSquare = 'squareIphone';
