@@ -1,9 +1,9 @@
 var hSquares = {};
+var width = 20;
 
 hSquares.Board = function(w, h)
 {
     var that = this;
-    var lastSquare = null;
     var width = w;
     var height = h;
 
@@ -45,6 +45,15 @@ hSquares.Board = function(w, h)
     // Update board state
     this.updateBoard = function(data)
     {
+        if(that.manageReturnCode(data))
+        {
+            that.fillSquares(data);
+            that.showAvailableSquares(data);
+        }
+    }
+
+    this.manageReturnCode = function(data)
+    {
         if(data.code)
         {
             switch(data.code)
@@ -67,7 +76,7 @@ hSquares.Board = function(w, h)
                     }
                     else
                     {
-                        return;
+                        return false;
                     }
                     break;
                 case '2':
@@ -77,36 +86,60 @@ hSquares.Board = function(w, h)
                     break;
             }
         }
+        return true;
+    }
+
+    this.fillSquares = function(data)
+    {
         if(data.squares)
         {
             // Remove highlighted cells
+            $('#animate').stop(true, true).remove();
             $('.availableSquare').removeClass('availableSquare');
 
             var i = 0;
             while(data.squares[i])
             {
-                if(lastSquare)
-                    lastSquare.removeClass('lastSquare');
+                $('.lastSquare').removeClass('lastSquare');
 
                 // Put value in square + highlight new current square
-                lastSquare = $('#board td#'+((data.squares[i].y) * width + data.squares[i].x));
-
-                lastSquare.html(data.squares[i].value);
-                lastSquare.addClass('lastSquare');
-                i++;
-            }
-        }
-        if(data.available)
-        {
-            // Highlight available squares
-            var i = 0;
-            while(data.available[i])
-            {
-                $('#board td#'+((data.available[i].y) * width + data.available[i].x)).addClass('availableSquare');
+                $('#board td#'+((data.squares[i].y) * width + data.squares[i].x)).html(data.squares[i].value).addClass('lastSquare');
                 i++;
             }
         }
     }
+
+    this.showAvailableSquares = function(data)
+    {
+        if(data.available)
+        {
+            var l = $('.lastSquare');
+            l.append('<div id="animate" class="availableSquare"></div>');
+            var offsetDeparture = l.offset();
+            $('#animate').css({ 
+                position: "absolute",
+                top: "-500px", left: "-500px",
+                width: l.width()+"px",
+                height: l.height()+"px",
+            });
+            // Highlight available squares
+            var i = 0;
+            while(data.available[i])
+            {
+                let d = $('#animate');
+                d.offset({top:offsetDeparture.top,left:offsetDeparture.left});
+                var offsetArrival = $('#board td#'+((data.available[i].y) * width + data.available[i].x)).offset();
+                let item = i;
+                d.animate({top: offsetArrival.top+"px", left: offsetArrival.left+"px"}, 100, function(){
+                    $('#board td#'+((data.available[item].y) * width + data.available[item].x)).addClass('availableSquare');
+                    if(d.queue().length == 1)
+                        d.offset({top:-500,left:-500});
+                });
+                i++;
+            }
+        }
+    }
+
 
     // AI game - 1 step
     this.findNext = function()

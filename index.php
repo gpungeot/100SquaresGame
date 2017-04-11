@@ -29,7 +29,7 @@
 
     // Show computer game buttons
     $AI = false;
-    if(isset($_GET['AI_button']) && $_GET['AI_button'] == '1')
+    if(isset($_GET['AI-button']) && $_GET['AI-button'] == '1')
     {
         $AI = true;
     }
