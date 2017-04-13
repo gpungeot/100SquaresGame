@@ -9,7 +9,7 @@
         private $_lastPlay;
         
         // Create board from scratch or from session data
-        function nSquaresGame($xRange, $yRange, $defaultValue, $forceRenew = false)
+        public function __construct($xRange, $yRange, $defaultValue, $forceRenew = false)
         {
             if( !$forceRenew && isset($_SESSION['board']))
             {
@@ -29,7 +29,7 @@
         }
         
         // Clear last move data
-        function clearLastPlay()
+        public function clearLastPlay()
         {
             $this->_lastPlay["squares"] = null;
             $this->_lastPlay["code"] = null;
@@ -42,7 +42,7 @@
         }
 
         // Return last move informations to front in given @format
-        function getLastPlay($format = "json")
+        public function getLastPlay($format = "json")
         {
             if(sizeof($this->_lastPlay["squares"]) == 0 || $this->_lastPlay["code"] == -1)
                 return '';
@@ -80,7 +80,7 @@
         }
 
         // Play 1 move
-        function play($x, $y)
+        public function play($x, $y)
         {
             if($this->isValidSquare($x, $y))
             {
@@ -110,7 +110,7 @@
         }
 
         // Go back to a previous square
-        function back($x, $y)
+        public function back($x, $y)
         {
             // Clear all squares with value > chosen square
             $value = $this->_board->getSquareValue($x, $y);
@@ -161,7 +161,7 @@
         }
 
         // Return true if square at position (@x, @y) is free and reachable from current square
-        function isValidSquare($x, $y)
+        private function isValidSquare($x, $y)
         {
             if($this->_board->isEmpty($x, $y))
             {
@@ -181,7 +181,7 @@
         }
 
         // Return an array of squares free and reachable from square at position (@x, @y)
-        function getValidSquaresAround($x, $y)
+        private function getValidSquaresAround($x, $y)
         {
             $validSquares = array();
 
@@ -196,7 +196,7 @@
 
         // Return the best choice according to the AI algorithm
         // Best choice is an available square with the less available next squares (but more than zero)
-        function findBestSquare()
+        public function findBestSquare()
         {
             $s = $this->_board->getLastElement();
             $nextSquares = $this->getValidSquaresAround($s->getX(), $s->getY());
