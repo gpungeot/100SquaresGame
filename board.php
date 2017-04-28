@@ -34,7 +34,7 @@
             return $this->_y;
         }
 
-        private function clear($value = null)
+        public function clear($value = null)
         {
             $this->_value = $value;
         }
